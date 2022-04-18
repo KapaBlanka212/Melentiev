@@ -243,7 +243,7 @@ for i in range(0, 5):
         np.savetxt('E_GaAs_high', w_real_part_GaAs_hight * h_ * 1000)
         initial_guess = w_real_part_GaAs_hight
     elif i == 3:
-        np.savetxt('E_nGaAs_low', w_real_part_GaAs_hight * h_ * 1000)
+        np.savetxt('E_nGaAs_low', w_real_part_GaAs_low * h_ * 1000)
         initial_guess = w_real_part_nGaAs_low
     elif i == 4:
         np.savetxt('E_nGaAs_high', w_real_part_GaAs_hight * h_ * 1000)
