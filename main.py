@@ -174,14 +174,12 @@ def real_part_wave_equation(x: float):
         return real_part
     elif i == 3:
         w_plasma_nGaAs = w_p(Ne_nGaAs, epsilon_inf_GaAs, me_GaAs)
-        print(w_plasma_nGaAs * h_ * 1000)
         epsilon = thd_opr(epsilon_inf_GaAs, w_plasma_nGaAs, tau_nGaAs, w_real_part_nGaAs_low, x, tau_opt_ph_GaAs, w_LO,
                           w_TO)
         real_part = np.real(((w_real_part_nGaAs_low + 1j * x) / c) * np.sqrt(epsilon))
         return real_part
     elif i == 4:
         w_plasma_nGaAs = w_p(Ne_nGaAs, epsilon_inf_GaAs, me_GaAs)
-        print(w_plasma_nGaAs * h_ * 1000)
         epsilon = thd_opr(epsilon_inf_GaAs, w_plasma_nGaAs, tau_nGaAs, w_real_part_nGaAs_high, x, tau_opt_ph_GaAs, w_LO,
                           w_TO)
         real_part = np.real(((w_real_part_nGaAs_high + 1j * x) / c) * np.sqrt(epsilon))
@@ -205,14 +203,12 @@ def image_part_wave_equation(x: float):
         return image_part
     elif i == 3:
         w_plasma_nGaAs = w_p(Ne_nGaAs, epsilon_inf_GaAs, me_GaAs)
-        print(w_plasma_nGaAs * h_ * 1000)
         epsilon = thd_opr(epsilon_inf_GaAs, w_plasma_nGaAs, tau_nGaAs, w_real_part_nGaAs_low, x, tau_opt_ph_GaAs, w_LO,
                           w_TO)
         image_part = np.imag(((w_real_part_nGaAs_low + 1j * x) / c) * np.sqrt(epsilon))
         return image_part
     elif i == 4:
         w_plasma_nGaAs = w_p(Ne_nGaAs, epsilon_inf_GaAs, me_GaAs)
-        print(w_plasma_nGaAs * h_ * 1000)
         epsilon = thd_opr(epsilon_inf_GaAs, w_plasma_nGaAs, tau_nGaAs, w_real_part_nGaAs_high, x, tau_opt_ph_GaAs, w_LO,
                           w_TO)
         image_part = np.imag(((w_real_part_nGaAs_high + 1j * x) / c) * np.sqrt(epsilon))
@@ -243,10 +239,10 @@ for i in range(0, 5):
         np.savetxt('E_GaAs_high', w_real_part_GaAs_hight * h_ * 1000)
         initial_guess = w_real_part_GaAs_hight
     elif i == 3:
-        np.savetxt('E_nGaAs_low', w_real_part_GaAs_low * h_ * 1000)
+        np.savetxt('E_nGaAs_low', w_real_part_nGaAs_low * h_ * 1000)
         initial_guess = w_real_part_nGaAs_low
     elif i == 4:
-        np.savetxt('E_nGaAs_high', w_real_part_GaAs_hight * h_ * 1000)
+        np.savetxt('E_nGaAs_high', w_real_part_nGaAs_high * h_ * 1000)
         initial_guess = w_real_part_nGaAs_high
     sol = scipy.optimize.newton(image_part_wave_equation, initial_guess,  maxiter=1000,
                                 disp=False, full_output=False)
