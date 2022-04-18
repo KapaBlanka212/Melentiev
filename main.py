@@ -88,11 +88,13 @@ Theory Drude + One - Phonon Resonance:
 # Create energy range from 0 to 100 meV
 E = np.linspace(0.1, 100, 500) * 10 ** -3  # [eV]
 w_real_part = E / h_# E = w * hO
-w_real_part_GaAs_low = E[:164] / h_
-w_real_part_GaAs_hight = E[:325] / h_
-w_real_part_nGaAs_low = E[265:314:1] / h_
-w_real_part_nGaAs_high = E[:335] / h_
-
+w_real_part_GaAs_low = E[0:169:1] / h_
+w_real_part_GaAs_hight = E[180:] / h_
+w_real_part_nGaAs_low = E[115:169:1] / h_
+w_real_part_nGaAs_high = E[184:] / h_
+print(E * 10 ** 3)
+print(w_real_part_nGaAs_high * h_ * 10 ** 3)
+print(w_real_part_nGaAs_low * h_ * 10 ** 3)
 
 
 def image_frequency(freq_real: float, freq_image: float):  # create image frequency
@@ -259,3 +261,4 @@ for i in range(0, 5):
         np.savetxt('wave_vector_nGaAs_low', wave_vector)
     elif i == 4:
         np.savetxt('wave_vector_nGaAs_high', wave_vector)
+
