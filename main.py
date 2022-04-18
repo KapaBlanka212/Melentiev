@@ -86,13 +86,18 @@ Theory Drude + One - Phonon Resonance:
 '''
 
 # Create energy range from 0 to 100 meV
-E = np.linspace(0.1, 100, 100) * 10 ** -3  # [eV]
-w_real_part = E / h_  # E = w * hO
+E = np.linspace(0.1, 100, 500) * 10 ** -3  # [eV]
+w_real_part = E / h_# E = w * hO
+w_real_part_GaAs_low = E[:164] / h_
+w_real_part_GaAs_hight = E[:325] / h_
+w_real_part_nGaAs_low = E[265:314:1] / h_
+w_real_part_nGaAs_high = E[:335] / h_
+
 
 
 def image_frequency(freq_real: float, freq_image: float):  # create image frequency
-    w_ = freq_real + 1j * freq_image
-    return w_
+    w_i = freq_real + 1j * freq_image
+    return w_i
 
 
 def tau(m_e, mu):  # Calculation lifetime of electron (SI UNIT)
@@ -160,15 +165,27 @@ def real_part_wave_equation(x: float):
         real_part = np.real(((w_ + 1j * x) / c) * np.sqrt(epsilon))
         return real_part
     elif i == 1:
-        epsilon = opr(epsilon_inf_GaAs, tau_opt_ph_GaAs, w_LO, w_TO, E / h_, x)
-        real_part = np.real(((E / h_ + 1j * x) / c) * np.sqrt(epsilon))
+        epsilon = opr(epsilon_inf_GaAs, tau_opt_ph_GaAs, w_LO, w_TO, w_real_part_GaAs_low, x)
+        real_part = np.real(((w_real_part_GaAs_low + 1j * x) / c) * np.sqrt(epsilon))
         return real_part
     elif i == 2:
-        w_plasma_nGaAs = w_p(Ne_nGaAs, epsilon_inf_GaAs, me_GaAs)
-        epsilon = thd_opr(epsilon_inf_GaAs, w_plasma_nGaAs, tau_nGaAs, E[25:] / h_ , x, tau_opt_ph_GaAs, w_LO, w_TO)
-        real_part = np.real(((E[25:] / h_ + 1j * x) / c) * np.sqrt(epsilon))
+        epsilon = opr(epsilon_inf_GaAs, tau_opt_ph_GaAs, w_LO, w_TO, w_real_part_GaAs_hight, x)
+        real_part = np.real(((w_real_part_GaAs_hight + 1j * x) / c) * np.sqrt(epsilon))
         return real_part
-
+    elif i == 3:
+        w_plasma_nGaAs = w_p(Ne_nGaAs, epsilon_inf_GaAs, me_GaAs)
+        print(w_plasma_nGaAs * h_ * 1000)
+        epsilon = thd_opr(epsilon_inf_GaAs, w_plasma_nGaAs, tau_nGaAs, w_real_part_nGaAs_low, x, tau_opt_ph_GaAs, w_LO,
+                          w_TO)
+        real_part = np.real(((w_real_part_nGaAs_low + 1j * x) / c) * np.sqrt(epsilon))
+        return real_part
+    elif i == 4:
+        w_plasma_nGaAs = w_p(Ne_nGaAs, epsilon_inf_GaAs, me_GaAs)
+        print(w_plasma_nGaAs * h_ * 1000)
+        epsilon = thd_opr(epsilon_inf_GaAs, w_plasma_nGaAs, tau_nGaAs, w_real_part_nGaAs_high, x, tau_opt_ph_GaAs, w_LO,
+                          w_TO)
+        real_part = np.real(((w_real_part_nGaAs_high + 1j * x) / c) * np.sqrt(epsilon))
+        return real_part
 
 
 def image_part_wave_equation(x: float):
@@ -179,13 +196,26 @@ def image_part_wave_equation(x: float):
         image_part = np.imag(((w_ + 1j * x) / c) * np.sqrt(epsilon))
         return image_part
     elif i == 1:
-        epsilon = opr(epsilon_inf_GaAs, tau_opt_ph_GaAs, w_LO, w_TO, E / h_, x)
-        image_part = np.imag(((E / h_ + 1j * x) / c) * np.sqrt(epsilon))
+        epsilon = opr(epsilon_inf_GaAs, tau_opt_ph_GaAs, w_LO, w_TO, w_real_part_GaAs_low, x)
+        image_part = np.imag(((w_real_part_GaAs_low + 1j * x) / c) * np.sqrt(epsilon))
         return image_part
     elif i == 2:
+        epsilon = opr(epsilon_inf_GaAs, tau_opt_ph_GaAs, w_LO, w_TO, w_real_part_GaAs_hight, x)
+        image_part = np.imag(((w_real_part_GaAs_hight + 1j * x) / c) * np.sqrt(epsilon))
+        return image_part
+    elif i == 3:
         w_plasma_nGaAs = w_p(Ne_nGaAs, epsilon_inf_GaAs, me_GaAs)
-        epsilon = thd_opr(epsilon_inf_GaAs, w_plasma_nGaAs, tau_nGaAs, E[25:] / h_, x, tau_opt_ph_GaAs, w_LO, w_TO)
-        image_part = np.imag(((E[25:] / h_ + 1j * x) / c) * np.sqrt(epsilon))
+        print(w_plasma_nGaAs * h_ * 1000)
+        epsilon = thd_opr(epsilon_inf_GaAs, w_plasma_nGaAs, tau_nGaAs, w_real_part_nGaAs_low, x, tau_opt_ph_GaAs, w_LO,
+                          w_TO)
+        image_part = np.imag(((w_real_part_nGaAs_low + 1j * x) / c) * np.sqrt(epsilon))
+        return image_part
+    elif i == 4:
+        w_plasma_nGaAs = w_p(Ne_nGaAs, epsilon_inf_GaAs, me_GaAs)
+        print(w_plasma_nGaAs * h_ * 1000)
+        epsilon = thd_opr(epsilon_inf_GaAs, w_plasma_nGaAs, tau_nGaAs, w_real_part_nGaAs_high, x, tau_opt_ph_GaAs, w_LO,
+                          w_TO)
+        image_part = np.imag(((w_real_part_nGaAs_high + 1j * x) / c) * np.sqrt(epsilon))
         return image_part
 
 
@@ -200,71 +230,36 @@ def numerical_diff(x: float):
     return diff_out
 
 
-for i in range(0, 3):
+for i in range(0, 5):
     if i == 0:
         w_plasma_germany = w_p(Ne_Ge, epsilon_inf_Ge, me_Ge)
         w_ = np.linspace(w_plasma_germany, E[-1] / h_, 100)
         np.savetxt('E_Ge', w_ * h_ * 1000)
         initial_guess = w_
     elif i == 1:
-        np.savetxt('E_GaAs', w_real_part * h_ * 1000)
-        initial_guess = w_real_part
+        np.savetxt('E_GaA_low', w_real_part_GaAs_low * h_ * 1000)
+        initial_guess = w_real_part_GaAs_low
     elif i == 2:
-        np.savetxt('E_nGaAs', w_real_part[25:] * h_ * 1000)
-        initial_guess = w_real_part[25:]
+        np.savetxt('E_GaAs_high', w_real_part_GaAs_hight * h_ * 1000)
+        initial_guess = w_real_part_GaAs_hight
+    elif i == 3:
+        np.savetxt('E_nGaAs_low', w_real_part_GaAs_hight * h_ * 1000)
+        initial_guess = w_real_part_nGaAs_low
+    elif i == 4:
+        np.savetxt('E_nGaAs_high', w_real_part_GaAs_hight * h_ * 1000)
+        initial_guess = w_real_part_nGaAs_high
     sol = scipy.optimize.newton(image_part_wave_equation, initial_guess,  maxiter=1000,
                                 disp=False, full_output=False)
-    print('Image part', image_part_wave_equation(sol))
+    print('Image part', image_part_wave_equation(sol), '\n')
+
     wave_vector = calculation_wave_vector(np.array(sol))
     if i == 0:
-        np.save('wave_vector_Ge', wave_vector)
         np.savetxt('wave_vector_Ge', wave_vector)
     elif i == 1:
-        np.save('wave_vector_GaAs', wave_vector)
-        np.savetxt('wave_vector_GaAs', wave_vector)
+        np.savetxt('wave_vector_GaAs_low', wave_vector)
     elif i == 2:
-        np.save('wave_vector_nGaAs', wave_vector)
-        np.savetxt('wave_vector_Ge', wave_vector)
-
-'''
-#Plot dispersion E(k) unit
-'''
-w_plasma_germany = w_p(Ne_Ge, epsilon_inf_Ge, me_Ge)
-w_ = np.linspace(w_plasma_germany, E[-1] / h_, 100)
-E_Ge = (w_ * h_) * 1000
-
-figure1, ax1 = plt.subplots()
-ax1.plot(np.load('wave_vector_Ge.npy'), E_Ge, label='n-Ge')
-ax1.set(ylabel='E, meV', xlabel='k, cm', title='n-Ge')
-ax1.grid()
-ax1.semilogx()
-figure1.savefig('n-Ge.png')
-plt.show()
-
-figure2, ax2 = plt.subplots()
-ax2.plot(np.load('wave_vector_GaAs.npy'), E * 10 ** 3, label='GaAs')
-ax2.set(ylabel='E, meV', xlabel='k, cm', title='GaAs')
-ax2.grid()
-ax2.semilogx()
-figure2.savefig('GaAs.png')
-plt.show()
-
-figure3, ax3 = plt.subplots()
-ax3.plot(np.load('wave_vector_nGaAs.npy'), E[25:] * 10 ** 3, label='n-GaAs')
-ax3.set(ylabel='E, meV', xlabel='k, cm', title='n-GaAs')
-ax3.grid()
-ax3.semilogx()
-figure3.savefig('n-GaAs.png')
-plt.show()
-
-figure4, ax4 = plt.subplots()
-ax4.plot(np.load('wave_vector_Ge.npy'), E_Ge, label='n-Ge')
-ax4.set(ylabel='E, meV', xlabel='k, cm')
-ax4.plot(np.load('wave_vector_GaAs.npy'), E * 10 ** 3, label='GaAs')
-ax4.set(ylabel='E, meV', xlabel='k, cm')
-ax4.plot(np.load('wave_vector_nGaAs.npy'), E[25:] * 10 ** 3, label='n-GaAs')
-ax4.set(ylabel='E, meV', xlabel='k, cm')
-ax4.grid()
-ax4.legend()
-figure3.savefig('all material.png')
-plt.show()
+        np.savetxt('wave_vector_GaAs_high', wave_vector)
+    elif i == 3:
+        np.savetxt('wave_vector_nGaAs_low', wave_vector)
+    elif i == 4:
+        np.savetxt('wave_vector_nGaAs_high', wave_vector)
