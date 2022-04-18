@@ -162,29 +162,29 @@ def real_part_wave_equation(x: float):
         w_plasma_germany = w_p(Ne_Ge, epsilon_inf_Ge, me_Ge)
         w_ = np.linspace(w_plasma_germany, E[-1] / h_, 100)
         epsilon = th_drude(epsilon_inf_Ge, w_plasma_germany, tau_Ge, w_, x)
-        real_part = np.imag(((w_ + 1j * x) / c) * np.sqrt(epsilon))
+        real_part = np.real(((w_ + 1j * x) / c) * np.sqrt(epsilon))
         return real_part
     elif i == 1:
         epsilon = opr(epsilon_inf_GaAs, tau_opt_ph_GaAs, w_LO, w_TO, w_real_part_GaAs_low, x)
-        real_part = np.imag(((w_real_part_GaAs_low + 1j * x) / c) * np.sqrt(epsilon))
+        real_part = np.real(((w_real_part_GaAs_low + 1j * x) / c) * np.sqrt(epsilon))
         return real_part
     elif i == 2:
         epsilon = opr(epsilon_inf_GaAs, tau_opt_ph_GaAs, w_LO, w_TO, w_real_part_GaAs_hight, x)
-        real_part = np.imag(((w_real_part_GaAs_hight + 1j * x) / c) * np.sqrt(epsilon))
+        real_part = np.real(((w_real_part_GaAs_hight + 1j * x) / c) * np.sqrt(epsilon))
         return real_part
     elif i == 3:
         w_plasma_nGaAs = w_p(Ne_nGaAs, epsilon_inf_GaAs, me_GaAs)
         print(w_plasma_nGaAs * h_ * 1000)
         epsilon = thd_opr(epsilon_inf_GaAs, w_plasma_nGaAs, tau_nGaAs, w_real_part_nGaAs_low, x, tau_opt_ph_GaAs, w_LO,
                           w_TO)
-        real_part = np.imag(((w_real_part_nGaAs_low + 1j * x) / c) * np.sqrt(epsilon))
+        real_part = np.real(((w_real_part_nGaAs_low + 1j * x) / c) * np.sqrt(epsilon))
         return real_part
     elif i == 4:
         w_plasma_nGaAs = w_p(Ne_nGaAs, epsilon_inf_GaAs, me_GaAs)
         print(w_plasma_nGaAs * h_ * 1000)
         epsilon = thd_opr(epsilon_inf_GaAs, w_plasma_nGaAs, tau_nGaAs, w_real_part_nGaAs_high, x, tau_opt_ph_GaAs, w_LO,
                           w_TO)
-        real_part = np.imag(((w_real_part_nGaAs_high + 1j * x) / c) * np.sqrt(epsilon))
+        real_part = np.real(((w_real_part_nGaAs_high + 1j * x) / c) * np.sqrt(epsilon))
         return real_part
 
 
@@ -251,6 +251,7 @@ for i in range(0, 5):
     sol = scipy.optimize.newton(image_part_wave_equation, initial_guess,  maxiter=1000,
                                 disp=False, full_output=False)
     print('Image part', image_part_wave_equation(sol), '\n')
+
     wave_vector = calculation_wave_vector(np.array(sol))
     if i == 0:
         np.savetxt('wave_vector_Ge', wave_vector)
