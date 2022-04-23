@@ -87,14 +87,13 @@ Theory Drude + One - Phonon Resonance:
 
 # Create energy range from 0 to 100 meV
 E = np.linspace(0.1, 100, 500) * 10 ** -3  # [eV]
-w_real_part = E / h_# E = w * hO
+w_real_part = E / h_  # E = w * hO
 w_real_part_GaAs_low = E[0:169:1] / h_
-w_real_part_GaAs_hight = E[180:] / h_
+w_real_part_GaAs_hight = E[170:] / h_
 w_real_part_nGaAs_low = E[115:169:1] / h_
 w_real_part_nGaAs_high = E[184:] / h_
-print(E * 10 ** 3)
-print(w_real_part_nGaAs_high * h_ * 10 ** 3)
-print(w_real_part_nGaAs_low * h_ * 10 ** 3)
+#print(w_real_part_nGaAs_high * h_ * 10 ** 3)
+#print(w_real_part_nGaAs_low * h_ * 10 ** 3)
 
 
 def image_frequency(freq_real: float, freq_image: float):  # create image frequency
@@ -111,7 +110,9 @@ def tau(m_e, mu):  # Calculation lifetime of electron (SI UNIT)
 
 
 tau_Ge = tau(me_Ge, mu_Ge)
+print('tau_Ge', tau_Ge)
 tau_nGaAs = tau(me_GaAs, mu_nGaAs)
+print('tau_nGaAs', tau_nGaAs)
 
 
 def w_p(ne, eps_inf, me):  # plasma frequency
@@ -162,6 +163,7 @@ NOTE: w = Re(w) + i * Im(w), Re(w) = E / h_
 def real_part_wave_equation(x: float):
     if i == 0:
         w_plasma_germany = w_p(Ne_Ge, epsilon_inf_Ge, me_Ge)
+        print('w_pl_Ge', w_plasma_germany, 'E_pl_Ge', w_plasma_germany * h_ * 10 ** 3)
         w_ = np.linspace(w_plasma_germany, E[-1] / h_, 100)
         epsilon = th_drude(epsilon_inf_Ge, w_plasma_germany, tau_Ge, w_, x)
         real_part = np.real(((w_ + 1j * x) / c) * np.sqrt(epsilon))
@@ -176,6 +178,7 @@ def real_part_wave_equation(x: float):
         return real_part
     elif i == 3:
         w_plasma_nGaAs = w_p(Ne_nGaAs, epsilon_inf_GaAs, me_GaAs)
+        print('w_pl_nGaAs', w_plasma_nGaAs, 'E_pl', w_plasma_nGaAs * h_ * 10 ** 3)
         epsilon = thd_opr(epsilon_inf_GaAs, w_plasma_nGaAs, tau_nGaAs, w_real_part_nGaAs_low, x, tau_opt_ph_GaAs, w_LO,
                           w_TO)
         real_part = np.real(((w_real_part_nGaAs_low + 1j * x) / c) * np.sqrt(epsilon))
@@ -248,7 +251,7 @@ for i in range(0, 5):
         initial_guess = w_real_part_nGaAs_high
     sol = scipy.optimize.newton(image_part_wave_equation, initial_guess,  maxiter=1000,
                                 disp=False, full_output=False)
-    print('Image part', image_part_wave_equation(sol), '\n')
+    #print('Image part', image_part_wave_equation(sol), '\n')
 
     wave_vector = calculation_wave_vector(np.array(sol))
     if i == 0:
