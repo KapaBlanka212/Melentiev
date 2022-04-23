@@ -1,6 +1,0 @@
-
-_python:S1192מ"FDefine a constant instead of duplicating this literal 'k, cm' 6 times.(צ™יפ
-`python:S1192מ"GDefine a constant instead of duplicating this literal 'E, meV' 6 times.(צ™יפ
-;python:S125Z"Remove this commented out code.(Þׁ­כתÿÿÿÿ
-|python:S117§"_Rename this local variable "w_plasma_nGaAs" to match the regular expression ^[_a-z][a-z0-9_]*$.(₪ׂÛיüÿÿÿÿ
-|python:S117÷"_Rename this local variable "w_plasma_nGaAs" to match the regular expression ^[_a-z][a-z0-9_]*$.(₪ׂÛיüÿÿÿÿ
