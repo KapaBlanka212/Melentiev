@@ -224,7 +224,7 @@ for i in range(0, 3):
         np.savetxt('wave_vector_GaAs', wave_vector)
     elif i == 2:
         np.save('wave_vector_nGaAs', wave_vector)
-        np.savetxt('wave_vector_Ge', wave_vector)
+        np.savetxt('wave_vector_nGaAs', wave_vector)
 
 '''
 #Plot dispersion E(k) unit
