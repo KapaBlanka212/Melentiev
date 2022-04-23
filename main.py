@@ -87,7 +87,7 @@ Theory Drude + One - Phonon Resonance:
 
 # Create energy range from 0 to 100 meV
 E = np.linspace(0.1, 100, 500) * 10 ** -3  # [eV]
-w_real_part = E / h_# E = w * hO
+w_real_part = E / h_  # E = w * hO
 w_real_part_GaAs_low = E[0:169:1] / h_
 w_real_part_GaAs_hight = E[180:] / h_
 w_real_part_nGaAs_low = E[115:169:1] / h_
@@ -103,16 +103,15 @@ def image_frequency(freq_real: float, freq_image: float):  # create image freque
 
 
 def tau(m_e, mu):  # Calculation lifetime of electron (SI UNIT)
-    e_ = 1.6 * 10 ** -19  # coulon
-    m_ = m_e * 10 ** -3  # kg
-    mu_ = mu * 10 ** -4  # m ^ 2 / (V * sec)
-    tau_out = (m_ * mu_) / e_  # 1 / sec
+    mu_ = (10 ** (-2) / 3) * mu
+    tau_out = (m_e * mu_) / e  # 1 / sec
     return tau_out
 
 
 tau_Ge = tau(me_Ge, mu_Ge)
+print(tau_Ge)
 tau_nGaAs = tau(me_GaAs, mu_nGaAs)
-
+print(tau_nGaAs)
 
 def w_p(ne, eps_inf, me):  # plasma frequency
     w_p_out = np.sqrt(4 * np.pi * ne * e ** 2 / (eps_inf * me))
